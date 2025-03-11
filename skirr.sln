@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skirr", "Skirr\Skirr.csproj", "{11B671B0-FABF-4136-B26E-A0881516E166}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skirr.Test", "Skirr.Test\Skirr.Test.csproj", "{3657F5A1-E668-41C3-A717-C83FD62B73D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skirr.Core", "Skirr.Core\Skirr.Core.csproj", "{3DCFD6A8-140B-4D35-96D3-7A74FD57A7C7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{11B671B0-FABF-4136-B26E-A0881516E166}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11B671B0-FABF-4136-B26E-A0881516E166}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11B671B0-FABF-4136-B26E-A0881516E166}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11B671B0-FABF-4136-B26E-A0881516E166}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3657F5A1-E668-41C3-A717-C83FD62B73D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3657F5A1-E668-41C3-A717-C83FD62B73D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3657F5A1-E668-41C3-A717-C83FD62B73D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3657F5A1-E668-41C3-A717-C83FD62B73D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DCFD6A8-140B-4D35-96D3-7A74FD57A7C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DCFD6A8-140B-4D35-96D3-7A74FD57A7C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DCFD6A8-140B-4D35-96D3-7A74FD57A7C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DCFD6A8-140B-4D35-96D3-7A74FD57A7C7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
