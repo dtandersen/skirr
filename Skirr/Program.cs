@@ -21,6 +21,20 @@ builder.Services.AddHttpLogging(logging =>
 });
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpLogging(o => { });
+// builder.Services.AddControllers(options =>
+//   {
+//       var jsonInputFormatter = options.InputFormatters
+//           .OfType<Microsoft.AspNetCore.Mvc.Formatters.SystemTextJsonInputFormatter>()
+//           .Single();
+//       jsonInputFormatter.SupportedMediaTypes.Add("application/json");
+//   }
+//   );
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
+{
+    options.SerializerOptions.PropertyNameCaseInsensitive = false;
+    options.SerializerOptions.PropertyNamingPolicy = null;
+    options.SerializerOptions.WriteIndented = true;
+});
 // builder.Services.AddHostedService<X>();
 builder.Services.AddHostedService<ConsumeScopedServiceHostedService>();
 builder.Services.AddScoped<IScopedProcessingService, DiscoveryListener2>();
@@ -38,17 +52,18 @@ if (!app.Environment.IsDevelopment())
 // app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseAuthorization();
+// app.UseAuthorization();
 
-app.MapGet("/hi", () => "Hello!");
+// app.MapGet("/hi", () => "Hello!");
 
-app.MapDefaultControllerRoute();
+// app.MapDefaultControllerRoute();
 // app.MapRazorPages();
 
 // app.MapRazorComponents<App>()
 //     .AddInteractiveServerRenderMode();
 
-app.UseAntiforgery();
+// app.UseAntiforgery();
+app.MapControllers();
 
 app.Run();
 // app.Run("http://localhost:5001");

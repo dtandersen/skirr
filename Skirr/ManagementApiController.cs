@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
+namespace Skirr.Management;
+
 public class ApplicationsController : Controller
 {
     // private readonly IApplicationService _applicationService;
