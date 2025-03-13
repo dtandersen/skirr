@@ -5,42 +5,54 @@ namespace Skirr.Command;
 
 public class Tests : AscomTest
 {
+    private ConnectResultDto Result;
+    private AlpacaDevice? Device;
+
     [Test]
     public void Connect()
     {
         GivenDevice(DeviceType.CoverCalibrator, 1);
-        Connect connect = new Connect(devices);
-        ConnectRequest request = new ConnectRequest()
+
+        WhenConnect(new ConnectRequest()
         {
             DeviceType = DeviceType.CoverCalibrator,
             DeviceNumber = 1
-        };
+        });
 
-        ConnectResult result = new ConnectResult();
-
-        connect.Execute(request, result);
-
-        AlpacaDevice? device = devices.Find(DeviceType.CoverCalibrator, 1);
-        device.DeviceNumber.ShouldBe(1);
-        result.Result.ClientTransactionID.ShouldBe(1);
-        result.Result.ServerTransactionID.ShouldBe(1);
+        Device.Connected.ShouldBe(true);
+        Result.ClientTransactionID.ShouldBe(1);
+        Result.ServerTransactionID.ShouldBe(1);
     }
 
     [Test]
     public void DeviceIsInvalid()
     {
-        Connect connect = new Connect(devices);
-        ConnectRequest request = new ConnectRequest()
+        try
         {
-            DeviceType = DeviceType.CoverCalibrator,
-            DeviceNumber = 1
-        };
+            Connect connect = new Connect(devices);
+            ConnectRequest request = new ConnectRequest()
+            {
+                DeviceType = DeviceType.CoverCalibrator,
+                DeviceNumber = 2
+            };
 
-        ConnectResult result = new ConnectResult();
+            connect.Execute(request);
+        }
+        catch (InvalidDeviceException e)
+        {
+            var error = e.Error;
+            error.ErrorNumber.ShouldBe(0x401);
+            error.ErrorMessage.ShouldBe($"Invalid device: {DeviceType.CoverCalibrator}#2");
+            return;
+        }
 
-        connect.Execute(request, result);
+        Assert.Fail("Expected InvalidDeviceException");
+    }
 
-        result.Error.ErrorNumber.ShouldBe(0x401);
-        result.Error.ErrorMessage.ShouldBe($"Invalid device: {DeviceType.CoverCalibrator}#1");
+    private void WhenConnect(ConnectRequest request)
+    {
+        Connect connect = new Connect(devices);
+        Result = connect.Execute(request);
+        Device = devices.Find(DeviceType.CoverCalibrator, 1);
     }
 }

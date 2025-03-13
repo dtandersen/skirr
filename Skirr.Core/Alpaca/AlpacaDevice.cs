@@ -18,7 +18,14 @@ public class ConfiguredDevices
 
     public ConfiguredDevices()
     {
-        Devices = new List<AlpacaDevice>();
+        Devices =
+        [
+            new AlpacaDevice
+            {
+                DeviceType = DeviceType.CoverCalibrator,
+                DeviceNumber = 1
+            },
+        ];
     }
 
     public void AddDevice(AlpacaDevice device)

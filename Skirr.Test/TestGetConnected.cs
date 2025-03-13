@@ -5,7 +5,6 @@ namespace Skirr.Command;
 
 public class GetConnectedTest : AscomTest
 {
-    GetConnectedResult? result;
     GetConnectedDto? Result;
 
     [Test]
@@ -28,23 +27,28 @@ public class GetConnectedTest : AscomTest
     [Test]
     public void DeviceIsInvalid()
     {
-        WhenConnected(new GetConnectedRequest()
+        try
         {
-            DeviceType = DeviceType.CoverCalibrator,
-            DeviceNumber = 1
-        });
+            WhenConnected(new GetConnectedRequest()
+            {
+                DeviceType = DeviceType.CoverCalibrator,
+                DeviceNumber = 2
+            });
+        }
+        catch (InvalidDeviceException e)
+        {
+            var error = e.Error;
+            error.ErrorNumber.ShouldBe(0x401);
+            error.ErrorMessage.ShouldBe($"Invalid device: {DeviceType.CoverCalibrator}#2");
+            return;
+        }
 
-        result.Error.ErrorNumber.ShouldBe(0x401);
-        result.Error.ErrorMessage.ShouldBe($"Invalid device: {DeviceType.CoverCalibrator}#1");
+        Assert.Fail("Expected InvalidDeviceException");
     }
 
     private void WhenConnected(GetConnectedRequest request)
     {
-        result = new GetConnectedResult();
-
         GetConnected command = new GetConnected(devices);
-        command.Execute(request, result);
-
-        Result = result.Result;
+        Result = command.Execute(request);
     }
 }

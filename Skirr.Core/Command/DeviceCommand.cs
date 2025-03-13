@@ -1,8 +1,9 @@
+
 namespace Skirr.Command;
 
 public abstract class DeviceCommand<REQ, RES> : Command<REQ, RES>
     where REQ : DeviceRequest
-    where RES : ErrorResult
+    where RES : DeviceResult
 {
     public ConfiguredDevices Devices { get; }
 
@@ -11,25 +12,24 @@ public abstract class DeviceCommand<REQ, RES> : Command<REQ, RES>
         Devices = devices;
     }
 
-    public RES Execute(REQ request, RES result)
+    public RES Execute(REQ request)
     {
         AlpacaDevice? device = Devices.Find(request.DeviceType, request.DeviceNumber);
         if (device == null)
         {
-            result.Invalid(new ErrorDto
+            throw new InvalidDeviceException(new DeviceResult
             {
                 ClientTransactionID = request.ClientTransactionId,
                 ServerTransactionID = 0,
                 ErrorNumber = 0x401,
                 ErrorMessage = $"Invalid device: {request.DeviceType}#{request.DeviceNumber}"
             });
-            return result;
         }
 
-        return ExecuteDevice(device, request, result);
+        return ExecuteDevice(device, request);
     }
 
-    public abstract RES ExecuteDevice(AlpacaDevice device, REQ request, RES result);
+    public abstract RES ExecuteDevice(AlpacaDevice device, REQ request);
 }
 
 public class DeviceRequest
@@ -40,46 +40,10 @@ public class DeviceRequest
     public int ClientTransactionId;
 }
 
-public class DeviceResult<T> : SuccessResult<T>, ErrorResult
-    where T : DeviceDto
+public class DeviceResult
 {
-    public T? Result;
-
-    public ErrorDto? Error;
-
-    public void Invalid(ErrorDto error)
-    {
-        Error = error;
-    }
-
-    public void Success(T result)
-    {
-        Result = result;
-    }
-}
-
-public class DeviceDto
-{
-    public int ClientTransactionID;
-    public int ServerTransactionID;
-    public int ErrorNumber;
-    public string ErrorMessage = "";
-}
-
-public interface SuccessResult<RES> where RES : DeviceDto
-{
-    void Success(RES result);
-}
-
-public interface ErrorResult
-{
-    void Invalid(ErrorDto result);
-}
-
-public record ErrorDto
-{
-    public int ClientTransactionID;
-    public int ServerTransactionID;
-    public int ErrorNumber;
-    public string ErrorMessage = "";
+    public int ClientTransactionID { get; init; }
+    public int ServerTransactionID { get; init; }
+    public int ErrorNumber { get; init; }
+    public string ErrorMessage { get; init; } = "";
 }

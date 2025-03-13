@@ -17,33 +17,39 @@ public class DeviceApiController : ControllerBase
     [Route("api/v1/{DeviceType}/{DeviceNumber}/connect")]
     [HttpPut]
     [Produces("application/json")]
-    public IActionResult Connect([FromQuery] string DeviceType, [FromRoute] int DeviceNumber, [FromForm] ConnectRequest request)
+    public async Task<IActionResult> Connect([FromQuery] string DeviceType, [FromRoute] int DeviceNumber, [FromForm] ConnectRequestJson request)
     {
         var command = commandFactory.Connect();
-        var request2 = new Skirr.Command.ConnectRequest
+        var result = command.Execute(new ConnectRequest
         {
             DeviceType = DeviceType,
             DeviceNumber = DeviceNumber
-        };
-        Command.ConnectResult result = new();
-        var result3 = command.Execute(request2, result);
+        });
+
         return Ok(new ConnectResultJson
         {
-            ClientTransactionID = result3.Result.ClientTransactionID,
-            ServerTransactionID = result3.Result.ServerTransactionID
+            ClientTransactionID = result.ClientTransactionID,
+            ServerTransactionID = result.ServerTransactionID
         });
     }
 
     [Route("api/v1/{DeviceType}/{DeviceNumber}/connected")]
     [HttpGet]
     [Produces("application/json")]
-    public IActionResult Connected([FromRoute] string DeviceType, [FromRoute] int DeviceNumber, [FromForm] ConnectRequest request)
+    public async Task<IActionResult> Connected([FromRoute] string DeviceType, [FromRoute] int DeviceNumber, [FromForm] ConnectRequestJson request)
     {
-        Console.WriteLine("Connected");
-        return Ok(new ConnectResultJson
+        var command = commandFactory.GetConnected();
+        var result = command.Execute(new GetConnectedRequest
         {
-            ClientTransactionID = 1,
-            ServerTransactionID = 1
+            DeviceType = DeviceType,
+            DeviceNumber = DeviceNumber
+        });
+
+        return Ok(new GetConnectedResultJson
+        {
+            ClientTransactionID = result.ClientTransactionID,
+            ServerTransactionID = result.ServerTransactionID,
+            Value = result.Connected
         });
     }
 
@@ -56,12 +62,12 @@ public class DeviceApiController : ControllerBase
         return new ConnectedResult
         {
             ClientID = 1,
-            ClientTransactionID = 1
+            ClientTransactionID = 1,
         };
     }
 }
 
-public class ConnectRequest
+public class ConnectRequestJson
 {
     public int ClientID { get; set; }
     public int ClientTransactionID { get; set; }
@@ -84,4 +90,11 @@ public class ConnectedResult
 {
     public int ClientID { get; set; }
     public int ClientTransactionID { get; set; }
+}
+
+public class GetConnectedResultJson
+{
+    public int ClientTransactionID { get; set; }
+    public int ServerTransactionID { get; set; }
+    public bool Value { get; set; }
 }

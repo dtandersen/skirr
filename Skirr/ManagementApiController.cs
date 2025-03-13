@@ -48,8 +48,8 @@ public class ApplicationsController : Controller
         "Value": [
             {
             "DeviceName": "Skirr",
-            "DeviceType": "CoverCalibrator",
-            "DeviceNumber": 5,
+            "DeviceType": "covercalibrator",
+            "DeviceNumber": 1,
             "UniqueID": "c8629d61-9619-4870-a0b9-6badb3e402bd"
             }
         ],
