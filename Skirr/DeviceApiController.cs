@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Skirr.Command;
+using Skirr.Model;
 
 namespace Skirr.Device;
 
@@ -17,7 +18,7 @@ public class DeviceApiController : ControllerBase
     [Route("api/v1/{DeviceType}/{DeviceNumber}/connect")]
     [HttpPut]
     [Produces("application/json")]
-    public async Task<IActionResult> Connect([FromQuery] string DeviceType, [FromRoute] int DeviceNumber, [FromForm] ConnectRequestJson request)
+    public IActionResult Connect([FromQuery] string DeviceType, [FromRoute] int DeviceNumber, [FromForm] ConnectRequestJson request)
     {
         var command = commandFactory.Connect();
         var result = command.Execute(new ConnectRequest
@@ -36,7 +37,7 @@ public class DeviceApiController : ControllerBase
     [Route("api/v1/{DeviceType}/{DeviceNumber}/connected")]
     [HttpGet]
     [Produces("application/json")]
-    public async Task<IActionResult> Connected([FromRoute] string DeviceType, [FromRoute] int DeviceNumber, [FromForm] ConnectRequestJson request)
+    public IActionResult Connected([FromRoute] string DeviceType, [FromRoute] int DeviceNumber, [FromForm] ConnectRequestJson request)
     {
         var command = commandFactory.GetConnected();
         var result = command.Execute(new GetConnectedRequest
@@ -65,36 +66,24 @@ public class DeviceApiController : ControllerBase
             ClientTransactionID = 1,
         };
     }
-}
 
-public class ConnectRequestJson
-{
-    public int ClientID { get; set; }
-    public int ClientTransactionID { get; set; }
-}
+    [HttpGet]
+    [Route("api/v1/{DeviceType}/{DeviceNumber}/description")]
+    [Produces("application/json")]
+    public IActionResult GetDescription([FromRoute] string DeviceType, [FromRoute] int DeviceNumber, [FromForm] ConnectRequestJson request)
+    {
+        var command = commandFactory.GetDescription();
+        var result = command.Execute(new GetDescriptionRequest
+        {
+            DeviceType = DeviceType,
+            DeviceNumber = DeviceNumber
+        });
 
-public class ConnectResultJson
-{
-    public int ClientTransactionID { get; set; }
-    public int ServerTransactionID { get; set; }
-}
-
-public class ConnectedRequest
-{
-    public int ClientID { get; set; }
-    public int ClientTransactionID { get; set; }
-    public required bool Connected { get; set; }
-}
-
-public class ConnectedResult
-{
-    public int ClientID { get; set; }
-    public int ClientTransactionID { get; set; }
-}
-
-public class GetConnectedResultJson
-{
-    public int ClientTransactionID { get; set; }
-    public int ServerTransactionID { get; set; }
-    public bool Value { get; set; }
+        return Ok(new GetDescriptionResultJson
+        {
+            ClientTransactionID = result.ClientTransactionID,
+            ServerTransactionID = result.ServerTransactionID,
+            Value = result.Value
+        });
+    }
 }

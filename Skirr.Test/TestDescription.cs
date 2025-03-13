@@ -1,32 +1,30 @@
-﻿using System.Threading.Tasks;
-using Shouldly;
+﻿using Shouldly;
 using Skirr.Test;
 
 namespace Skirr.Command;
 
-public class GetConnectedTest : DeviceTest
+public class TestGetDescription : DeviceTest
 {
-    GetConnectedDto? Result;
+    private GetDescriptionResult Result;
+    private AlpacaDevice? Device;
 
     [Test]
-    public void DeviceIsConnected()
+    public void ReturnTheDescription()
     {
         GivenDevice(new AlpacaDevice
         {
             DeviceType = DeviceType.CoverCalibrator,
             DeviceNumber = 1,
-            Connected = true,
             Description = "My cover calibrator"
         });
 
-        WhenConnected(new GetConnectedRequest()
+        WhenGetDescription(new GetDescriptionRequest()
         {
             DeviceType = DeviceType.CoverCalibrator,
             DeviceNumber = 1
         });
 
-        AlpacaDevice? device = devices.Find(DeviceType.CoverCalibrator, 1);
-        device.Connected.ShouldBe(true);
+        Result.Value.ShouldBe("My cover calibrator");
         Result.ClientTransactionID.ShouldBe(1);
         Result.ServerTransactionID.ShouldBe(1);
     }
@@ -36,7 +34,7 @@ public class GetConnectedTest : DeviceTest
     {
         try
         {
-            WhenConnected(new GetConnectedRequest()
+            WhenGetDescription(new GetDescriptionRequest()
             {
                 DeviceType = DeviceType.CoverCalibrator,
                 DeviceNumber = 2
@@ -45,7 +43,7 @@ public class GetConnectedTest : DeviceTest
         catch (InvalidDeviceException e)
         {
             var error = e.Error;
-            error.ErrorNumber.ShouldBe(0x401);
+            error.ErrorNumber.ShouldBe(DeviceError.InvalidDevice);
             error.ErrorMessage.ShouldBe($"Invalid device: {DeviceType.CoverCalibrator}#2");
             return;
         }
@@ -53,9 +51,10 @@ public class GetConnectedTest : DeviceTest
         Assert.Fail("Expected InvalidDeviceException");
     }
 
-    private void WhenConnected(GetConnectedRequest request)
+    private void WhenGetDescription(GetDescriptionRequest request)
     {
-        GetConnected command = new GetConnected(devices);
-        Result = command.Execute(request);
+        GetDescription connect = new GetDescription(devices);
+        Result = connect.Execute(request);
+        Device = devices.Find(DeviceType.CoverCalibrator, 1);
     }
 }

@@ -3,6 +3,7 @@ using System.Net.Sockets;
 using System.Text;
 using Microsoft.AspNetCore.HttpLogging;
 using Skirr;
+using Skirr.Repository;
 // using WebAll.Components;
 
 
@@ -39,7 +40,7 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =
 // builder.Services.AddHostedService<X>();
 builder.Services.AddHostedService<ConsumeScopedServiceHostedService>();
 builder.Services.AddScoped<IScopedProcessingService, DiscoveryListener2>();
-builder.Services.AddSingleton<ConfiguredDevices>();
+builder.Services.AddSingleton<ConfiguredDevices, ConfiguredDevicesStub>();
 builder.Services.AddSingleton<CommandFactory>();
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

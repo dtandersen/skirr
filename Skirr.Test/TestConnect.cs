@@ -1,9 +1,10 @@
-﻿using Shouldly;
+﻿using System.Threading.Tasks;
+using Shouldly;
 using Skirr.Test;
 
 namespace Skirr.Command;
 
-public class Tests : AscomTest
+public class Tests : DeviceTest
 {
     private ConnectResultDto Result;
     private AlpacaDevice? Device;
@@ -11,7 +12,12 @@ public class Tests : AscomTest
     [Test]
     public void Connect()
     {
-        GivenDevice(DeviceType.CoverCalibrator, 1);
+        GivenDevice(new AlpacaDevice
+        {
+            DeviceType = DeviceType.CoverCalibrator,
+            DeviceNumber = 1,
+            Description = "My cover calibrator"
+        });
 
         WhenConnect(new ConnectRequest()
         {

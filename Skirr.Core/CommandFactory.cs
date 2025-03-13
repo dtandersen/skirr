@@ -1,4 +1,5 @@
 using Skirr.Command;
+using Skirr.Repository;
 
 namespace Skirr;
 
@@ -19,5 +20,10 @@ public class CommandFactory
     public GetConnected GetConnected()
     {
         return new GetConnected(Devices);
+    }
+
+    public GetDescription GetDescription()
+    {
+        return new GetDescription(Devices);
     }
 }

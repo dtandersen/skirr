@@ -1,4 +1,6 @@
 
+using Skirr.Repository;
+
 namespace Skirr.Command;
 
 public abstract class DeviceCommand<REQ, RES> : Command<REQ, RES>

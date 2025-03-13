@@ -1,3 +1,5 @@
+using Skirr.Repository;
+
 namespace Skirr.Command;
 
 /// <summary>

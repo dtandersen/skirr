@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <OutputType>Exe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
-    <NoWarn>CS8602</NoWarn>
+    <NoWarn>CS8602,CS8618</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
