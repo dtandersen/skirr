@@ -3,33 +3,47 @@ namespace Skirr.Command;
 /// <summary>
 /// https://ascom-standards.org/api/#/ASCOM%20Methods%20Common%20To%20All%20Devices/put__device_type___device_number__connect
 /// </summary>
-public class Connect
+public class Connect : DeviceCommand<ConnectRequest, ConnectResult>
 {
-    private readonly Ascom ascom;
-
-    public Connect(Ascom ascom)
+    public Connect(ConfiguredDevices devices) : base(devices)
     {
-        this.ascom = ascom;
     }
 
-    public void Execute(ConnectRequest request, ConnectResult result)
+    public override void ExecuteDevice(AlpacaDevice device, ConnectRequest request, ConnectResult result)
     {
-        ascom.DeviceNumber = 1;
-        result.ClientTransactionID = 1;
-        result.ServerTransactionID = 1;
+        // result.ClientTransactionID = 1;
+        // result.ServerTransactionID = 1;
+        result.Success(new ConnectDto()
+        {
+            ClientTransactionID = 1,
+            ServerTransactionID = 1
+        });
     }
 }
 
-public record ConnectRequest
+public class ConnectRequest : DeviceRequest
 {
-    public required string DeviceType;
-    public required int DeviceNumber;
-    public int ClientId;
-    public int ClientTransactionId;
 }
 
-public record ConnectResult
+public class ConnectDto : DeviceDto
 {
-    public int ClientTransactionID;
-    public int ServerTransactionID;
 }
+
+public class ConnectResult : DeviceResult<ConnectDto>
+{
+}
+// public class ConnectResult : SuccessResult<ConnectDto>, ErrorResult
+// {
+//     public ConnectDto result;
+//     public ErrorDto error;
+
+//     public void Invalid(ErrorDto error)
+//     {
+//         this.error = error;
+//     }
+
+//     public void Success(ConnectDto result)
+//     {
+//         this.result = result;
+//     }
+// }
