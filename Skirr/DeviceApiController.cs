@@ -7,18 +7,31 @@ namespace Skirr.Device;
 [ApiController]
 public class DeviceApiController : ControllerBase
 {
+    private readonly CommandFactory commandFactory;
+
+    public DeviceApiController(CommandFactory commandFactory)
+    {
+        this.commandFactory = commandFactory;
+    }
+
     [Route("api/v1/{DeviceType}/{DeviceNumber}/connect")]
     [HttpPut]
     [Produces("application/json")]
-    public String Connect([FromQuery] string DeviceType, [FromRoute] int DeviceNumber, [FromForm] ConnectRequest request)
+    public IActionResult Connect([FromQuery] string DeviceType, [FromRoute] int DeviceNumber, [FromForm] ConnectRequest request)
     {
-        Console.WriteLine("connect");
-        return $$"""
+        var command = commandFactory.Connect();
+        var request2 = new Skirr.Command.ConnectRequest
         {
-        "ClientTransactionID": 1,
-        "ServerTransactionID": 1,
-        }
-        """;
+            DeviceType = DeviceType,
+            DeviceNumber = DeviceNumber
+        };
+        Command.ConnectResult result = new();
+        command.Execute(request2, result);
+        return Ok(new ConnectResult
+        {
+            ClientTransactionID = result.Result.ClientTransactionID,
+            ServerTransactionID = result.Result.ServerTransactionID
+        });
     }
 
     [Route("api/v1/{DeviceType}/{DeviceNumber}/connected")]

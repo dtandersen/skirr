@@ -2,6 +2,7 @@
 using System.Net.Sockets;
 using System.Text;
 using Microsoft.AspNetCore.HttpLogging;
+using Skirr;
 // using WebAll.Components;
 
 
@@ -38,6 +39,8 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =
 // builder.Services.AddHostedService<X>();
 builder.Services.AddHostedService<ConsumeScopedServiceHostedService>();
 builder.Services.AddScoped<IScopedProcessingService, DiscoveryListener2>();
+builder.Services.AddSingleton<ConfiguredDevices>();
+builder.Services.AddSingleton<CommandFactory>();
 // builder.WebHost.UseUrls("http://localhost:5000", "https://localhost:5001");
 var app = builder.Build();
 app.UseMiddleware<RequestResponseLoggerMiddleware>();
