@@ -9,7 +9,7 @@ public class GetConnected : DeviceCommand<GetConnectedRequest, GetConnectedResul
     {
     }
 
-    public override void ExecuteDevice(AlpacaDevice device, GetConnectedRequest request, GetConnectedResult result)
+    public override GetConnectedResult ExecuteDevice(AlpacaDevice device, GetConnectedRequest request, GetConnectedResult result)
     {
         device.Connected = true;
         result.Success(new GetConnectedDto()
@@ -18,6 +18,7 @@ public class GetConnected : DeviceCommand<GetConnectedRequest, GetConnectedResul
             ServerTransactionID = 1,
             Connected = true
         });
+        return result;
     }
 }
 

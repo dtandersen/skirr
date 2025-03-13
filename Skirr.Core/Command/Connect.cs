@@ -9,7 +9,7 @@ public class Connect : DeviceCommand<ConnectRequest, ConnectResult>
     {
     }
 
-    public override void ExecuteDevice(AlpacaDevice device, ConnectRequest request, ConnectResult result)
+    public override ConnectResult ExecuteDevice(AlpacaDevice device, ConnectRequest request, ConnectResult result)
     {
         // result.ClientTransactionID = 1;
         // result.ServerTransactionID = 1;
@@ -18,6 +18,8 @@ public class Connect : DeviceCommand<ConnectRequest, ConnectResult>
             ClientTransactionID = 1,
             ServerTransactionID = 1
         });
+
+        return result;
     }
 }
 

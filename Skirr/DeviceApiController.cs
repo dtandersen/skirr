@@ -26,11 +26,11 @@ public class DeviceApiController : ControllerBase
             DeviceNumber = DeviceNumber
         };
         Command.ConnectResult result = new();
-        command.Execute(request2, result);
-        return Ok(new ConnectResult
+        var result3 = command.Execute(request2, result);
+        return Ok(new ConnectResultJson
         {
-            ClientTransactionID = result.Result.ClientTransactionID,
-            ServerTransactionID = result.Result.ServerTransactionID
+            ClientTransactionID = result3.Result.ClientTransactionID,
+            ServerTransactionID = result3.Result.ServerTransactionID
         });
     }
 
@@ -40,7 +40,7 @@ public class DeviceApiController : ControllerBase
     public IActionResult Connected([FromRoute] string DeviceType, [FromRoute] int DeviceNumber, [FromForm] ConnectRequest request)
     {
         Console.WriteLine("Connected");
-        return Ok(new ConnectResult
+        return Ok(new ConnectResultJson
         {
             ClientTransactionID = 1,
             ServerTransactionID = 1
@@ -67,7 +67,7 @@ public class ConnectRequest
     public int ClientTransactionID { get; set; }
 }
 
-public class ConnectResult
+public class ConnectResultJson
 {
     public int ClientTransactionID { get; set; }
     public int ServerTransactionID { get; set; }

@@ -11,7 +11,7 @@ public abstract class DeviceCommand<REQ, RES> : Command<REQ, RES>
         Devices = devices;
     }
 
-    public void Execute(REQ request, RES result)
+    public RES Execute(REQ request, RES result)
     {
         AlpacaDevice? device = Devices.Find(request.DeviceType, request.DeviceNumber);
         if (device == null)
@@ -23,13 +23,13 @@ public abstract class DeviceCommand<REQ, RES> : Command<REQ, RES>
                 ErrorNumber = 0x401,
                 ErrorMessage = $"Invalid device: {request.DeviceType}#{request.DeviceNumber}"
             });
-            return;
+            return result;
         }
 
-        ExecuteDevice(device, request, result);
+        return ExecuteDevice(device, request, result);
     }
 
-    public abstract void ExecuteDevice(AlpacaDevice device, REQ request, RES result);
+    public abstract RES ExecuteDevice(AlpacaDevice device, REQ request, RES result);
 }
 
 public class DeviceRequest
