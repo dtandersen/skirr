@@ -86,4 +86,64 @@ public class DeviceApiController : ControllerBase
             Value = result.Value
         });
     }
+
+    [HttpGet]
+    [Route("api/v1/{DeviceType}/{DeviceNumber}/driverinfo")]
+    [Produces("application/json")]
+    public IActionResult GetDeviceInfo([FromRoute] string DeviceType, [FromRoute] int DeviceNumber, [FromForm] ConnectRequestJson request)
+    {
+        var command = commandFactory.GetDeviceInfo();
+        var result = command.Execute(new GetDeviceInfoRequest
+        {
+            DeviceType = DeviceType,
+            DeviceNumber = DeviceNumber
+        });
+
+        return Ok(new GetDeviceInfoResultJson
+        {
+            ClientTransactionID = result.ClientTransactionID,
+            ServerTransactionID = result.ServerTransactionID,
+            Value = result.Value
+        });
+    }
+
+    [HttpGet]
+    [Route("api/v1/{DeviceType}/{DeviceNumber}/name")]
+    [Produces("application/json")]
+    public IActionResult GetName([FromRoute] string DeviceType, [FromRoute] int DeviceNumber, [FromForm] ConnectRequestJson request)
+    {
+        var command = commandFactory.GetName();
+        var result = command.Execute(new GetNameRequest
+        {
+            DeviceType = DeviceType,
+            DeviceNumber = DeviceNumber
+        });
+
+        return Ok(new GetNameResponse
+        {
+            ClientTransactionID = result.ClientTransactionID,
+            ServerTransactionID = result.ServerTransactionID,
+            Value = result.Value
+        });
+    }
+
+    [HttpGet]
+    [Route("api/v1/{DeviceType}/{DeviceNumber}/supportedactions")]
+    [Produces("application/json")]
+    public IActionResult GetSupportedActions([FromRoute] string DeviceType, [FromRoute] int DeviceNumber, [FromForm] ConnectRequestJson request)
+    {
+        var command = commandFactory.GetSupportedActions();
+        var result = command.Execute(new GetSupportedActionsRequest
+        {
+            DeviceType = DeviceType,
+            DeviceNumber = DeviceNumber
+        });
+
+        return Ok(new GetSupportedActionsResponse
+        {
+            ClientTransactionID = result.ClientTransactionID,
+            ServerTransactionID = result.ServerTransactionID,
+            Value = result.Value
+        });
+    }
 }

@@ -38,7 +38,10 @@ public class ConfiguredDevicesStub : InMemoryConfiguredDevices
             {
                 DeviceType = DeviceType.CoverCalibrator,
                 DeviceNumber = 1,
-                Description = "Skirr cover calibrator"
+                Description = "Skirr cover calibrator",
+                Info = "Skirr cover calibrator",
+                Name = "Skirr cover calibrator",
+                Actions = new List<string> { "brightness" }
             });
     }
 }

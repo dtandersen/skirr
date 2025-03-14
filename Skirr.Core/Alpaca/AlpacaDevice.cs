@@ -1,3 +1,4 @@
+
 namespace Skirr;
 
 public class AlpacaDevice
@@ -6,6 +7,9 @@ public class AlpacaDevice
     public required int DeviceNumber { get; init; }
     public bool Connected { get; set; }
     public required string Description { get; init; }
+    public required string Info { get; init; }
+    public required string Name { get; init; }
+    public required List<string> Actions { get; init; }
 
     public AlpacaDevice()
     {

@@ -12,12 +12,7 @@ public class Tests : DeviceTest
     [Test]
     public void Connect()
     {
-        GivenDevice(new AlpacaDevice
-        {
-            DeviceType = DeviceType.CoverCalibrator,
-            DeviceNumber = 1,
-            Description = "My cover calibrator"
-        });
+        GivenCoverCalibrator();
 
         WhenConnect(new ConnectRequest()
         {

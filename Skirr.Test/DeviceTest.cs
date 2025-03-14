@@ -1,3 +1,4 @@
+using Skirr.Alpaca;
 using Skirr.Repository;
 
 namespace Skirr.Test;
@@ -11,8 +12,21 @@ public class DeviceTest
         devices = new InMemoryConfiguredDevices();
     }
 
-    protected void GivenDevice(AlpacaDevice device)
+    public void GivenDevice(AlpacaDevice device)
     {
         devices.AddDevice(device);
+    }
+
+    public void GivenCoverCalibrator()
+    {
+        GivenDevice(new CoverCalibrator
+        {
+            DeviceType = DeviceType.CoverCalibrator,
+            DeviceNumber = 1,
+            Description = "My cover calibrator",
+            Info = "info",
+            Name = "name",
+            Actions = ["brightness"]
+        });
     }
 }

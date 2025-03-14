@@ -3,28 +3,23 @@ using Skirr.Test;
 
 namespace Skirr.Command;
 
-public class TestGetDescription : DeviceTest
+public class TestGetSupportedActions : DeviceTest
 {
-    private GetDescriptionResult Result;
+    private GetSupportedActionsResult Result;
     private AlpacaDevice? Device;
 
     [Test]
     public void ReturnTheDescription()
     {
-        GivenDevice(new AlpacaDevice
-        {
-            DeviceType = DeviceType.CoverCalibrator,
-            DeviceNumber = 1,
-            Description = "My cover calibrator"
-        });
+        GivenCoverCalibrator();
 
-        WhenGetDescription(new GetDescriptionRequest()
+        WhenGetSupportedActions(new GetSupportedActionsRequest()
         {
             DeviceType = DeviceType.CoverCalibrator,
             DeviceNumber = 1
         });
 
-        Result.Value.ShouldBe("My cover calibrator");
+        Result.Value.ShouldBe(["brightness"]);
         Result.ClientTransactionID.ShouldBe(1);
         Result.ServerTransactionID.ShouldBe(1);
     }
@@ -34,7 +29,7 @@ public class TestGetDescription : DeviceTest
     {
         try
         {
-            WhenGetDescription(new GetDescriptionRequest()
+            WhenGetSupportedActions(new GetSupportedActionsRequest()
             {
                 DeviceType = DeviceType.CoverCalibrator,
                 DeviceNumber = 2
@@ -51,9 +46,9 @@ public class TestGetDescription : DeviceTest
         Assert.Fail("Expected InvalidDeviceException");
     }
 
-    private void WhenGetDescription(GetDescriptionRequest request)
+    private void WhenGetSupportedActions(GetSupportedActionsRequest request)
     {
-        GetDescription connect = new GetDescription(devices);
+        GetSupportedActions connect = new GetSupportedActions(devices);
         Result = connect.Execute(request);
         Device = devices.Find(DeviceType.CoverCalibrator, 1);
     }

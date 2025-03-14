@@ -38,3 +38,33 @@ public class GetDescriptionResultJson
     public int ServerTransactionID { get; set; }
     public required string Value { get; set; }
 }
+
+public class GetDeviceInfoResultJson
+{
+    public int ClientTransactionID { get; set; }
+    public int ServerTransactionID { get; set; }
+    public required string Value { get; set; }
+}
+
+
+public class GetNameResponse
+{
+    public int ClientTransactionID { get; set; }
+    public int ServerTransactionID { get; set; }
+    public required string Value { get; set; }
+}
+
+
+public class GetSupportedActionsResponse
+{
+    public int ClientTransactionID { get; set; }
+    public int ServerTransactionID { get; set; }
+    public required List<string> Value { get; set; }
+}
+
+public class GetCoverCalibratorStateResponse
+{
+    public int ClientTransactionID { get; set; }
+    public int ServerTransactionID { get; set; }
+    public required int Value { get; set; }
+}
