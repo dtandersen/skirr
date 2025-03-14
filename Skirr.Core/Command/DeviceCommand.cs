@@ -16,7 +16,7 @@ public abstract class DeviceCommand<REQ, RES> : Command<REQ, RES>
 
     public RES Execute(REQ request)
     {
-        AlpacaDevice? device = Devices.Find(request.DeviceType, request.DeviceNumber);
+        AlpacaDevice? device = Devices.Find<AlpacaDevice>(request.DeviceType, request.DeviceNumber);
         if (device == null)
         {
             throw new InvalidDeviceException(new DeviceResult

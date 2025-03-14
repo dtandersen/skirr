@@ -50,6 +50,6 @@ public class TestGetDeviceInfo : DeviceTest
     {
         GetDeviceInfo connect = new GetDeviceInfo(devices);
         Result = connect.Execute(request);
-        Device = devices.Find(DeviceType.CoverCalibrator, 1);
+        Device = devices.Find<AlpacaDevice>(DeviceType.CoverCalibrator, 1);
     }
 }

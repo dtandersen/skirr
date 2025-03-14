@@ -6,7 +6,7 @@ public interface ConfiguredDevices
 
     public void AddDevice(AlpacaDevice device);
 
-    public AlpacaDevice? Find(string deviceType, int deviceNumber);
+    public T? Find<T>(string deviceType, int deviceNumber) where T : AlpacaDevice;
 }
 
 public class InMemoryConfiguredDevices : ConfiguredDevices
@@ -23,9 +23,9 @@ public class InMemoryConfiguredDevices : ConfiguredDevices
         Devices.Add(device);
     }
 
-    public AlpacaDevice? Find(string deviceType, int deviceNumber)
+    public T? Find<T>(string deviceType, int deviceNumber) where T : AlpacaDevice
     {
-        return Devices.Find(device => device.DeviceType == deviceType && device.DeviceNumber == deviceNumber);
+        return (T)Devices.Find(device => device.DeviceType == deviceType && device.DeviceNumber == deviceNumber);
     }
 }
 

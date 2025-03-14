@@ -1,3 +1,4 @@
+using Skirr.Alpaca;
 using Skirr.Repository;
 
 namespace Skirr.Command.CoverCalibrator;
@@ -10,11 +11,13 @@ public class GetCoverCalibratorState : DeviceCommand<GetCoverCalibratorStateRequ
 
     public override GetCoverCalibratorStateResult ExecuteDevice(AlpacaDevice device, GetCoverCalibratorStateRequest request)
     {
+        CoverCalibratorDevice? device2 = Devices.Find<CoverCalibratorDevice>(request.DeviceType, request.DeviceNumber);
+
         return new GetCoverCalibratorStateResult
         {
             ClientTransactionID = 1,
             ServerTransactionID = 1,
-            Value = CoverCalibratorState.Ready
+            Value = device2.State
         };
     }
 }
@@ -30,6 +33,6 @@ public class GetCoverCalibratorStateResult : DeviceResult
 
 public class CoverCalibratorState
 {
-    public static int Ready = 3;
-
+    public readonly static int Off = 1;
+    public readonly static int Ready = 3;
 }

@@ -19,7 +19,7 @@ public class DeviceTest
 
     public void GivenCoverCalibrator()
     {
-        GivenDevice(new CoverCalibrator
+        GivenDevice(new CoverCalibratorDevice
         {
             DeviceType = DeviceType.CoverCalibrator,
             DeviceNumber = 1,

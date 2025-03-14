@@ -1,10 +1,9 @@
-﻿using System.Threading.Tasks;
-using Shouldly;
+﻿using Shouldly;
 using Skirr.Test;
 
 namespace Skirr.Command;
 
-public class Tests : DeviceTest
+public class TestConnect : DeviceTest
 {
     private ConnectResultDto Result;
     private AlpacaDevice? Device;
@@ -54,6 +53,6 @@ public class Tests : DeviceTest
     {
         Connect connect = new Connect(devices);
         Result = connect.Execute(request);
-        Device = devices.Find(DeviceType.CoverCalibrator, 1);
+        Device = devices.Find<AlpacaDevice>(DeviceType.CoverCalibrator, 1);
     }
 }

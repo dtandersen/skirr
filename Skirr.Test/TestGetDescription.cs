@@ -1,4 +1,5 @@
 ﻿using Shouldly;
+using Skirr.Alpaca;
 using Skirr.Test;
 
 namespace Skirr.Command;
@@ -50,6 +51,6 @@ public class TestGetDescription : DeviceTest
     {
         GetDescription connect = new GetDescription(devices);
         Result = connect.Execute(request);
-        Device = devices.Find(DeviceType.CoverCalibrator, 1);
+        Device = devices.Find<AlpacaDevice>(DeviceType.CoverCalibrator, 1);
     }
 }

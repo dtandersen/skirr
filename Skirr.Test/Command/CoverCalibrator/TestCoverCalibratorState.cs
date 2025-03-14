@@ -1,18 +1,20 @@
 ﻿using Shouldly;
-using Skirr.Command.CoverCalibrator;
+using Skirr.Alpaca;
 using Skirr.Test;
 
-namespace Skirr.Command;
+namespace Skirr.Command.CoverCalibrator;
 
 public class TestGetCoverCalibratorState : DeviceTest
 {
     private GetCoverCalibratorStateResult Result;
-    private AlpacaDevice? Device;
+    private CoverCalibratorDevice? Device;
 
     [Test]
-    public void ReturnTheDescription()
+    public void CoverCalibratorIsReady()
     {
         GivenCoverCalibrator();
+        Device = devices.Find<CoverCalibratorDevice>(DeviceType.CoverCalibrator, 1);
+        Device.State = CoverCalibratorState.Ready;
 
         WhenGetCoverCalibratorState(new GetCoverCalibratorStateRequest()
         {
@@ -21,6 +23,24 @@ public class TestGetCoverCalibratorState : DeviceTest
         });
 
         Result.Value.ShouldBe(CoverCalibratorState.Ready);
+        Result.ClientTransactionID.ShouldBe(1);
+        Result.ServerTransactionID.ShouldBe(1);
+    }
+
+    [Test]
+    public void CoverCalibratorIsOff()
+    {
+        GivenCoverCalibrator();
+        Device = devices.Find<CoverCalibratorDevice>(DeviceType.CoverCalibrator, 1);
+        Device.State = CoverCalibratorState.Off;
+
+        WhenGetCoverCalibratorState(new GetCoverCalibratorStateRequest()
+        {
+            DeviceType = DeviceType.CoverCalibrator,
+            DeviceNumber = 1
+        });
+
+        Result.Value.ShouldBe(CoverCalibratorState.Off);
         Result.ClientTransactionID.ShouldBe(1);
         Result.ServerTransactionID.ShouldBe(1);
     }
@@ -51,6 +71,5 @@ public class TestGetCoverCalibratorState : DeviceTest
     {
         GetCoverCalibratorState connect = new GetCoverCalibratorState(devices);
         Result = connect.Execute(request);
-        Device = devices.Find(DeviceType.CoverCalibrator, 1);
     }
 }

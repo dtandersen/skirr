@@ -19,7 +19,7 @@ public class GetConnectedTest : DeviceTest
             DeviceNumber = 1
         });
 
-        AlpacaDevice? device = devices.Find(DeviceType.CoverCalibrator, 1);
+        AlpacaDevice? device = devices.Find<AlpacaDevice>(DeviceType.CoverCalibrator, 1);
         device.Connected.ShouldBe(true);
         Result.ClientTransactionID.ShouldBe(1);
         Result.ServerTransactionID.ShouldBe(1);

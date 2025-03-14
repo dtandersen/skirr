@@ -50,6 +50,6 @@ public class TestGetSupportedActions : DeviceTest
     {
         GetSupportedActions connect = new GetSupportedActions(devices);
         Result = connect.Execute(request);
-        Device = devices.Find(DeviceType.CoverCalibrator, 1);
+        Device = devices.Find<AlpacaDevice>(DeviceType.CoverCalibrator, 1);
     }
 }
