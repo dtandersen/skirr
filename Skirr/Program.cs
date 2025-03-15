@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using Microsoft.AspNetCore.HttpLogging;
 using Skirr;
 using Skirr.Repository;
@@ -48,6 +49,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.PropertyNamingPolicy = null;
 });
+builder.WebHost.UseWebRoot("wwwroot").UseStaticWebAssets();
 // var logger = builder.Services.GetService<ILogger<ApplicationLog>>();
 // services.AddSingleton(typeof(ILogger), logger);
 // builder.WebHost.UseUrls("http://localhost:5000", "https://localhost:5001");
@@ -56,6 +58,10 @@ var app = builder.Build();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 app.UseMiddleware<RequestResponseLoggerMiddleware>();
 app.UseHttpLogging();
+app.MapStaticAssets();
+app.UseWebSockets();
+// app.UseWebSocketHandler();
+// StaticWebAssetsLoader.UseStaticWebAssets(IWebHostEnvironment, IConfiguration)
 // Configure the HTTP request pipeline.
 // if (!app.Environment.IsDevelopment())
 // {

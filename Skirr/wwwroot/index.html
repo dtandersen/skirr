@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Minimalistic Vue JS</title>
+    <script src="./vue.global.prod.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        {{ message }}
+        <button @click="connect()">connect</button>
+    </div>
+</body>
+<script>
+    var app = Vue.createApp({
+        data() {
+            return {
+                message: "Hello world"
+            }
+        },
+        methods: {
+            connect() {
+                const wss = new WebSocket("ws://localhost:5000/ws");
+                wss.onopen = () => {
+                    console.log("Connected to WebSocket server");
+                    this.message = "Connected to WebSocket server";
+                };
+            }
+        }
+    })
+    app.mount("#app")
+</script>
+
+</html>
