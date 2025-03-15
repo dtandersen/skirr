@@ -67,4 +67,9 @@ public class CommandFactory
     {
         return new GetBrightness(Devices);
     }
+
+    public RegisterClient RegisterClient()
+    {
+        return new RegisterClient(Devices);
+    }
 }

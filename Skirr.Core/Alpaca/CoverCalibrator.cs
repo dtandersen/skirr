@@ -1,4 +1,5 @@
 
+using Skirr.Command;
 using Skirr.Command.CoverCalibrator;
 
 namespace Skirr.Alpaca;
@@ -9,6 +10,7 @@ public class CoverCalibratorDevice : AlpacaDevice
     public int CoverState { get; set; }
     public int Brightness { get; set; }
     public int MaxBrightness { get; set; } = 255;
+    public SkirrClient? Client { get; set; }
 
     public void Close()
     {

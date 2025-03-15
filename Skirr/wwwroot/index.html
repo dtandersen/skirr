@@ -5,9 +5,14 @@
     <meta charset="utf-8">
     <title>Minimalistic Vue JS</title>
     <script src="./vue.global.prod.js"></script>
+    <style>
+        .bgstyle {
+            background-color: red;
+        }
+    </style>
 </head>
 
-<body>
+<body class="bgstyle">
     <div id="app">
         {{ message }}
         <button @click="connect()">connect</button>
@@ -17,7 +22,13 @@
     var app = Vue.createApp({
         data() {
             return {
-                message: "Hello world"
+                message: "Hello world",
+                color: "red"
+            }
+        },
+        computed: {
+            computedWidth: function () {
+                return this.width;
             }
         },
         methods: {
@@ -27,6 +38,14 @@
                     console.log("Connected to WebSocket server");
                     this.message = "Connected to WebSocket server";
                 };
+
+                wss.onmessage = function (event) {
+                    console.log("Message from server: ", event.data);
+                    dec = parseInt(event.data);
+                    hex = dec.toString(16);
+                    color = "#" + hex + hex + hex;
+                    document.body.style.backgroundColor = color;
+                }
             }
         }
     })

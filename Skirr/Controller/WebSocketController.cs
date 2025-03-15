@@ -1,17 +1,31 @@
 
 using System.Net.WebSockets;
 using Microsoft.AspNetCore.Mvc;
+using Skirr.Command;
 
 namespace Skirr.Controller;
 
+[ApiController]
 public class WebSocketController : ControllerBase
 {
+    private readonly CommandFactory commandFactory;
+
+    public WebSocketController(CommandFactory commandFactory)
+    {
+        this.commandFactory = commandFactory;
+    }
+
     [Route("/ws")]
     public async Task Get()
     {
         if (HttpContext.WebSockets.IsWebSocketRequest)
         {
             using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
+            var command = commandFactory.RegisterClient();
+            command.Execute(new RegisterClientRequest
+            {
+                Client = new WebSocketClient(webSocket)
+            });
             await Echo(webSocket);
         }
         else
@@ -45,3 +59,21 @@ public class WebSocketController : ControllerBase
     }
 }
 
+public class WebSocketClient : SkirrClient
+{
+    public WebSocket WebSocket { get; init; }
+
+    public WebSocketClient(WebSocket webSocket)
+    {
+        WebSocket = webSocket;
+    }
+
+    public void SetBrightness(int brightness)
+    {
+        var command = $"{brightness}";
+        var buffer = System.Text.Encoding.UTF8.GetBytes(command);
+        var segment = new ArraySegment<byte>(buffer);
+
+        WebSocket.SendAsync(segment, WebSocketMessageType.Text, true, CancellationToken.None);
+    }
+}

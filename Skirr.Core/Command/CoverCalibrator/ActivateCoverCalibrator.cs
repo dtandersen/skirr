@@ -25,6 +25,10 @@ public class ActivateCoverCalibrator : DeviceCommand<ActivateCoverCalibratorRequ
             };
         }
 
+        if (device2.Client != null)
+        {
+            device2.Client.SetBrightness(request.Brightness);
+        }
         device2.SetBrightness(request.Brightness);
 
         return new ActivateCoverCalibratorResult

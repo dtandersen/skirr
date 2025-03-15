@@ -1,10 +1,9 @@
 ﻿using Shouldly;
-using Skirr.Alpaca;
 using Skirr.Test;
 
 namespace Skirr.Command.CoverCalibrator;
 
-public class ActivateCalibratorTest : CoverCalibratorDeviceTest
+public class ActivateCoverCalibratorTest : CoverCalibratorDeviceTest
 {
     private ActivateCoverCalibratorResult Result;
 
@@ -68,6 +67,26 @@ public class ActivateCalibratorTest : CoverCalibratorDeviceTest
     }
 
     [Test]
+    public void SendBrightnessToClient()
+    {
+        GivenCoverCalibrator();
+        var client = new FakeClient();
+        device.Brightness = 0;
+        device.Client = client;
+
+        WhenCalibratorIsActivated(new ActivateCoverCalibratorRequest()
+        {
+            DeviceType = DeviceType.CoverCalibrator,
+            DeviceNumber = 1,
+            Brightness = 100
+        });
+
+        client.Brightness.ShouldBe(100);
+        Result.ClientTransactionID.ShouldBe(1);
+        Result.ServerTransactionID.ShouldBe(1);
+    }
+
+    [Test]
     public void DeviceIsInvalid()
     {
         try
@@ -92,5 +111,15 @@ public class ActivateCalibratorTest : CoverCalibratorDeviceTest
     {
         ActivateCoverCalibrator connect = new ActivateCoverCalibrator(devices);
         Result = connect.Execute(request);
+    }
+}
+
+class FakeClient : SkirrClient
+{
+    public int Brightness { get; set; }
+
+    public void SetBrightness(int brightness)
+    {
+        Brightness = brightness;
     }
 }
