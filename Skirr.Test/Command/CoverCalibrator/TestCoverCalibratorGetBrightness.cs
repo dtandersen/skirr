@@ -2,25 +2,25 @@
 using Skirr.Alpaca;
 using Skirr.Test;
 
-namespace Skirr.Command;
+namespace Skirr.Command.CoverCalibrator;
 
-public class TestGetDescription : DeviceTest<AlpacaDevice>
+public class TestGetBrightness : CoverCalibratorDeviceTest
 {
-    private GetDescriptionResult Result;
-    private AlpacaDevice? Device;
+    private GetBrightnessResult Result;
 
     [Test]
-    public void ReturnTheDescription()
+    public void ReturnsTheBrightness()
     {
-        GivenDevice();
+        GivenCoverCalibrator();
+        device.SetBrightness(50);
 
-        WhenGetDescription(new GetDescriptionRequest()
+        WhenGetBrightness(new GetBrightnessRequest()
         {
             DeviceType = DeviceType.CoverCalibrator,
             DeviceNumber = 1
         });
 
-        Result.Value.ShouldBe("My cover calibrator");
+        Result.Value.ShouldBe(50);
         Result.ClientTransactionID.ShouldBe(1);
         Result.ServerTransactionID.ShouldBe(1);
     }
@@ -30,7 +30,7 @@ public class TestGetDescription : DeviceTest<AlpacaDevice>
     {
         try
         {
-            WhenGetDescription(new GetDescriptionRequest()
+            WhenGetBrightness(new GetBrightnessRequest()
             {
                 DeviceType = DeviceType.CoverCalibrator,
                 DeviceNumber = 2
@@ -45,10 +45,9 @@ public class TestGetDescription : DeviceTest<AlpacaDevice>
         Assert.Fail("Expected InvalidDeviceException");
     }
 
-    private void WhenGetDescription(GetDescriptionRequest request)
+    private void WhenGetBrightness(GetBrightnessRequest request)
     {
-        GetDescription connect = new GetDescription(devices);
+        GetBrightness connect = new GetBrightness(devices);
         Result = connect.Execute(request);
-        Device = devices.Find<AlpacaDevice>(DeviceType.CoverCalibrator, 1);
     }
 }

@@ -3,7 +3,7 @@ using Skirr.Test;
 
 namespace Skirr.Command;
 
-public class TestGetSupportedActions : DeviceTest
+public class TestGetSupportedActions : DeviceTest<AlpacaDevice>
 {
     private GetSupportedActionsResult Result;
     private AlpacaDevice? Device;
@@ -11,7 +11,7 @@ public class TestGetSupportedActions : DeviceTest
     [Test]
     public void ReturnTheDescription()
     {
-        GivenCoverCalibrator();
+        GivenDevice();
 
         WhenGetSupportedActions(new GetSupportedActionsRequest()
         {
@@ -35,11 +35,9 @@ public class TestGetSupportedActions : DeviceTest
                 DeviceNumber = 2
             });
         }
-        catch (InvalidDeviceException e)
+        catch (DeviceNotFoundException e)
         {
-            var error = e.Error;
-            error.ErrorNumber.ShouldBe(DeviceError.InvalidDevice);
-            error.ErrorMessage.ShouldBe($"Invalid device: {DeviceType.CoverCalibrator}#2");
+            e.Message.ShouldBe(DeviceNotFoundException.FormatMessage(DeviceType.CoverCalibrator, 2));
             return;
         }
 

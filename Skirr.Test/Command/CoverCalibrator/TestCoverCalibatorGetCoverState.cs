@@ -4,23 +4,23 @@ using Skirr.Test;
 
 namespace Skirr.Command.CoverCalibrator;
 
-public class TestGetCoverCalibratorState : CoverCalibratorDeviceTest
+public class TestGetCoverCalibratorCoverState : CoverCalibratorDeviceTest
 {
-    private GetCoverCalibratorStateResult Result;
+    private GetCoverCalibratorCoverStateResult Result;
 
     [Test]
     public void CoverCalibratorIsReady()
     {
         GivenCoverCalibrator();
-        device.State = CoverCalibratorState.Ready;
+        device.Open();
 
-        WhenGetCoverCalibratorState(new GetCoverCalibratorStateRequest()
+        WhenGetCoverCalibratorCoverState(new GetCoverCalibratorCoverStateRequest()
         {
             DeviceType = DeviceType.CoverCalibrator,
             DeviceNumber = 1
         });
 
-        Result.Value.ShouldBe(CoverCalibratorState.Ready);
+        Result.Value.ShouldBe(CoverCalibratorCoverState.Open);
         Result.ClientTransactionID.ShouldBe(1);
         Result.ServerTransactionID.ShouldBe(1);
     }
@@ -29,15 +29,15 @@ public class TestGetCoverCalibratorState : CoverCalibratorDeviceTest
     public void CoverCalibratorIsOff()
     {
         GivenCoverCalibrator();
-        device.State = CoverCalibratorState.Off;
+        device.Close();
 
-        WhenGetCoverCalibratorState(new GetCoverCalibratorStateRequest()
+        WhenGetCoverCalibratorCoverState(new GetCoverCalibratorCoverStateRequest()
         {
             DeviceType = DeviceType.CoverCalibrator,
             DeviceNumber = 1
         });
 
-        Result.Value.ShouldBe(CoverCalibratorState.Off);
+        Result.Value.ShouldBe(CoverCalibratorCoverState.Closed);
         Result.ClientTransactionID.ShouldBe(1);
         Result.ServerTransactionID.ShouldBe(1);
     }
@@ -47,7 +47,7 @@ public class TestGetCoverCalibratorState : CoverCalibratorDeviceTest
     {
         try
         {
-            WhenGetCoverCalibratorState(new GetCoverCalibratorStateRequest()
+            WhenGetCoverCalibratorCoverState(new GetCoverCalibratorCoverStateRequest()
             {
                 DeviceType = DeviceType.CoverCalibrator,
                 DeviceNumber = 2
@@ -62,9 +62,9 @@ public class TestGetCoverCalibratorState : CoverCalibratorDeviceTest
         Assert.Fail("Expected InvalidDeviceException");
     }
 
-    private void WhenGetCoverCalibratorState(GetCoverCalibratorStateRequest request)
+    private void WhenGetCoverCalibratorCoverState(GetCoverCalibratorCoverStateRequest request)
     {
-        GetCoverCalibratorState connect = new GetCoverCalibratorState(devices);
+        GetCoverCalibratorCoverState connect = new GetCoverCalibratorCoverState(devices);
         Result = connect.Execute(request);
     }
 }

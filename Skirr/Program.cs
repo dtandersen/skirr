@@ -23,6 +23,8 @@ builder.Services.AddHttpLogging(logging =>
 });
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpLogging(o => { });
+// builder.Logging.ClearProviders();
+// builder.Logging.AddConsole();
 // builder.Services.AddControllers(options =>
 //   {
 //       var jsonInputFormatter = options.InputFormatters
@@ -46,10 +48,12 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.PropertyNamingPolicy = null;
 });
+// var logger = builder.Services.GetService<ILogger<ApplicationLog>>();
+// services.AddSingleton(typeof(ILogger), logger);
 // builder.WebHost.UseUrls("http://localhost:5000", "https://localhost:5001");
 var app = builder.Build();
 // app.UseRequestCulture();
-app.UseMiddleware<CustomExceptionMiddleware>();
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 app.UseMiddleware<RequestResponseLoggerMiddleware>();
 app.UseHttpLogging();
 // Configure the HTTP request pipeline.

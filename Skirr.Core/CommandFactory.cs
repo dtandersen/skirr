@@ -23,6 +23,11 @@ public class CommandFactory
         return new GetConnected(Devices);
     }
 
+    public SetConnected SetConnected()
+    {
+        return new SetConnected(Devices);
+    }
+
     public GetDescription GetDescription()
     {
         return new GetDescription(Devices);
@@ -46,5 +51,20 @@ public class CommandFactory
     public GetCoverCalibratorState GetCoverCalibratorState()
     {
         return new GetCoverCalibratorState(Devices);
+    }
+
+    public GetCoverCalibratorCoverState GetCoverCalibratorCoverState()
+    {
+        return new GetCoverCalibratorCoverState(Devices);
+    }
+
+    public ActivateCoverCalibrator ActivateCoverCalibrator()
+    {
+        return new ActivateCoverCalibrator(Devices);
+    }
+
+    public GetBrightness GetBrightness()
+    {
+        return new GetBrightness(Devices);
     }
 }

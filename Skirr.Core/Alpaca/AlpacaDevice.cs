@@ -1,4 +1,3 @@
-
 namespace Skirr;
 
 public class AlpacaDevice
@@ -15,6 +14,16 @@ public class AlpacaDevice
     {
         Connected = false;
     }
+
+    public void Connect()
+    {
+        Connected = true;
+    }
+
+    public void Disconnect()
+    {
+        Connected = false;
+    }
 }
 
 public class DeviceType
@@ -24,5 +33,6 @@ public class DeviceType
 
 public class DeviceError
 {
-    public static int InvalidDevice = 0x401;
+    public static int InvalidValue = 0x401;
+    public static int MethodNotImplemented = 0x400;
 }

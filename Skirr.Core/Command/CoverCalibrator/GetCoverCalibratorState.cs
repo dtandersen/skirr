@@ -30,9 +30,3 @@ public class GetCoverCalibratorStateResult : DeviceResult
 {
     public required int Value { get; set; }
 }
-
-public class CoverCalibratorState
-{
-    public readonly static int Off = 1;
-    public readonly static int Ready = 3;
-}

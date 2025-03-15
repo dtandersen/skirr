@@ -13,12 +13,11 @@ public class GetConnected : DeviceCommand<GetConnectedRequest, GetConnectedDto>
 
     public override GetConnectedDto ExecuteDevice(AlpacaDevice device, GetConnectedRequest request)
     {
-        device.Connected = true;
         var result = new GetConnectedDto()
         {
             ClientTransactionID = 1,
             ServerTransactionID = 1,
-            Connected = true
+            Connected = device.Connected
         };
 
         return result;

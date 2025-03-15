@@ -1,26 +1,26 @@
-﻿using Shouldly;
+﻿using System.Threading.Tasks;
+using Shouldly;
 using Skirr.Test;
 
 namespace Skirr.Command;
 
-public class SetConnectedTest : DeviceTest<AlpacaDevice>
+public class GetConnectedTest : DeviceTest<AlpacaDevice>
 {
-    SetConnectedResult? Result;
+    GetConnectedDto? Result;
 
     [Test]
     public void DeviceIsConnected()
     {
         GivenDevice();
-        device.Disconnect();
+        device.Connect();
 
-        WhenSetConnected(new SetConnectedRequest()
+        WhenConnected(new GetConnectedRequest()
         {
             DeviceType = DeviceType.CoverCalibrator,
-            DeviceNumber = 1,
-            Connected = true
+            DeviceNumber = 1
         });
 
-        device.Connected.ShouldBe(true);
+        Result.Connected.ShouldBe(true);
         Result.ClientTransactionID.ShouldBe(1);
         Result.ServerTransactionID.ShouldBe(1);
     }
@@ -29,16 +29,15 @@ public class SetConnectedTest : DeviceTest<AlpacaDevice>
     public void DeviceIsDisconnected()
     {
         GivenDevice();
-        device.Connect();
+        device.Disconnect();
 
-        WhenSetConnected(new SetConnectedRequest()
+        WhenConnected(new GetConnectedRequest()
         {
             DeviceType = DeviceType.CoverCalibrator,
-            DeviceNumber = 1,
-            Connected = false
+            DeviceNumber = 1
         });
 
-        device.Connected.ShouldBe(false);
+        Result.Connected.ShouldBe(false);
         Result.ClientTransactionID.ShouldBe(1);
         Result.ServerTransactionID.ShouldBe(1);
     }
@@ -48,11 +47,10 @@ public class SetConnectedTest : DeviceTest<AlpacaDevice>
     {
         try
         {
-            WhenSetConnected(new SetConnectedRequest()
+            WhenConnected(new GetConnectedRequest()
             {
                 DeviceType = DeviceType.CoverCalibrator,
-                DeviceNumber = 2,
-                Connected = true
+                DeviceNumber = 2
             });
         }
         catch (DeviceNotFoundException e)
@@ -64,9 +62,9 @@ public class SetConnectedTest : DeviceTest<AlpacaDevice>
         Assert.Fail("Expected InvalidDeviceException");
     }
 
-    private void WhenSetConnected(SetConnectedRequest request)
+    private void WhenConnected(GetConnectedRequest request)
     {
-        SetConnected command = new SetConnected(devices);
+        GetConnected command = new GetConnected(devices);
         Result = command.Execute(request);
     }
 }

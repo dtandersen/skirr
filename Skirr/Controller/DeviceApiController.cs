@@ -1,9 +1,8 @@
-using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Skirr.Command;
 using Skirr.Model;
 
-namespace Skirr.Device;
+namespace Skirr.Web.Controller;
 
 [ApiController]
 public class DeviceApiController : ControllerBase
@@ -46,7 +45,7 @@ public class DeviceApiController : ControllerBase
             DeviceNumber = DeviceNumber
         });
 
-        return Ok(new GetConnectedResultJson
+        return Ok(new GetConnectedResponse
         {
             ClientTransactionID = result.ClientTransactionID,
             ServerTransactionID = result.ServerTransactionID,
@@ -57,14 +56,21 @@ public class DeviceApiController : ControllerBase
     [Route("api/v1/{DeviceType}/{DeviceNumber}/connected")]
     [HttpPut]
     [Produces("application/json")]
-    public ConnectedResult Connected2([FromRoute] string DeviceType, [FromRoute] int DeviceNumber, [FromForm] ConnectedRequest request)
+    public IActionResult SetConnected([FromRoute] string DeviceType, [FromRoute] int DeviceNumber, [FromForm] SetConnectedForm request)
     {
-        Console.WriteLine("Connected");
-        return new ConnectedResult
+        var command = commandFactory.SetConnected();
+        var result = command.Execute(new SetConnectedRequest
         {
-            ClientID = 1,
-            ClientTransactionID = 1,
-        };
+            DeviceType = DeviceType,
+            DeviceNumber = DeviceNumber,
+            Connected = request.Connected
+        });
+
+        return Ok(new SetConnectedResponse
+        {
+            ClientTransactionID = result.ClientTransactionID,
+            ServerTransactionID = result.ServerTransactionID,
+        });
     }
 
     [HttpGet]
@@ -104,6 +110,46 @@ public class DeviceApiController : ControllerBase
             ClientTransactionID = result.ClientTransactionID,
             ServerTransactionID = result.ServerTransactionID,
             Value = result.Value
+        });
+    }
+
+    [HttpGet]
+    [Route("api/v1/{DeviceType}/{DeviceNumber}/driverversion")]
+    [Produces("application/json")]
+    public IActionResult GetDriverVersion([FromRoute] string DeviceType, [FromRoute] int DeviceNumber, [FromForm] ConnectRequestJson request)
+    {
+        // var command = commandFactory.GetDeviceInfo();
+        // var result = command.Execute(new GetDeviceInfoRequest
+        // {
+        //     DeviceType = DeviceType,
+        //     DeviceNumber = DeviceNumber
+        // });
+
+        return Ok(new GetDeviceInfoResultJson
+        {
+            ClientTransactionID = 1,
+            ServerTransactionID = 1,
+            Value = "1"
+        });
+    }
+
+    [HttpGet]
+    [Route("api/v1/{DeviceType}/{DeviceNumber}/interfaceversion")]
+    [Produces("application/json")]
+    public IActionResult GetInterfaceVersion([FromRoute] string DeviceType, [FromRoute] int DeviceNumber, [FromForm] ConnectRequestJson request)
+    {
+        // var command = commandFactory.GetDeviceInfo();
+        // var result = command.Execute(new GetDeviceInfoRequest
+        // {
+        //     DeviceType = DeviceType,
+        //     DeviceNumber = DeviceNumber
+        // });
+
+        return Ok(new GetIntefaceVersionResult
+        {
+            ClientTransactionID = 1,
+            ServerTransactionID = 1,
+            Value = 1
         });
     }
 

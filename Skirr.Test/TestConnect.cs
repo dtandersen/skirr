@@ -3,15 +3,16 @@ using Skirr.Test;
 
 namespace Skirr.Command;
 
-public class TestConnect : DeviceTest
+public class TestConnect : DeviceTest<AlpacaDevice>
 {
-    private ConnectResultDto Result;
+    private ConnectResult Result;
     private AlpacaDevice? Device;
 
     [Test]
-    public void Connect()
+    public void DeviceIsConnected()
     {
-        GivenCoverCalibrator();
+        GivenDevice();
+        device.Disconnect();
 
         WhenConnect(new ConnectRequest()
         {
@@ -38,11 +39,9 @@ public class TestConnect : DeviceTest
 
             connect.Execute(request);
         }
-        catch (InvalidDeviceException e)
+        catch (DeviceNotFoundException e)
         {
-            var error = e.Error;
-            error.ErrorNumber.ShouldBe(0x401);
-            error.ErrorMessage.ShouldBe($"Invalid device: {DeviceType.CoverCalibrator}#2");
+            e.Message.ShouldBe(DeviceNotFoundException.FormatMessage(DeviceType.CoverCalibrator, 2));
             return;
         }
 

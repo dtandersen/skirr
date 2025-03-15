@@ -1,32 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Skirr.Management;
+namespace Skirr.Web.Controller;
 
-public class ApplicationsController : Controller
+[ApiController]
+public class ApplicationsController : ControllerBase
 {
-    // private readonly IApplicationService _applicationService;
-
-    // public ApplicationsController(IApplicationService applicationService)
-    // {
-    //     _applicationService = applicationService;
-    // }
-
-    [HttpPut]
-    public String Index(ApplicationQuery query)
-    {
-        // var permissionNodes = await _applicationService.SelectePagedApplicationsAsync(query);
-        // ViewData["Query"] = query;
-        // return View(permissionNodes.Data);
-        return """
-        test
-        """;
-    }
-
     [HttpGet]
     [Route("/management/apiversions")]
-    public String y()
+    public string ListApiVersions()
     {
-        Console.WriteLine("configureddevices");
         return """
         {
         "Value": [
@@ -40,9 +22,8 @@ public class ApplicationsController : Controller
 
     [HttpGet]
     [Route("/management/v1/configureddevices")]
-    public String x()
+    public string ListConfiguredDevices()
     {
-        Console.WriteLine("configureddevices");
         return """
         {
         "Value": [
@@ -61,9 +42,8 @@ public class ApplicationsController : Controller
 
     [HttpGet]
     [Route("/management/v1/description")]
-    public String z()
+    public string GetDescription()
     {
-        Console.WriteLine("description");
         return """
         {
         "Value": {
@@ -77,16 +57,4 @@ public class ApplicationsController : Controller
         }
         """;
     }
-}
-
-public record ApplicationQuery
-{
-    int ClientID;
-    int ClientTransactionID;
-}
-
-public record ApplicationResult
-{
-    int ClientTransactionID = 1;
-    int ServerTransactionID = 1;
 }
