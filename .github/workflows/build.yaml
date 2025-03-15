@@ -16,7 +16,7 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ matrix.dotnet-version }}
-        cache: true
+        # cache: true
 
     - name: Display dotnet version
       run: dotnet --version
